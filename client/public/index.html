@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa</title>
+    <!-- Incluye las hojas de estilo de Leaflet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/leaflet.css" />
+	<link rel = "stylesheet" href="CSS/main.css"/>
+    <link rel = "stylesheet" href="CSS/scatter-jitter.css">
+    <link rel = "stylesheet" href="PERN_PROYECT/client/public/CSS/leaflet-draw.css"/>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="JS/leaflet.js"></script>
+    <script src="JS/leaflet-draw.js"></script>
+</head>
+<body>
+    <div id="data-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // Variable para almacenar los segmentos
+    let segmentos = [];
+    // Función que se llama al cargar la página
+    window.onload = function() {
+        // Hacer la petición a la API y guardar los datos en la variable 'segmentos'
+        axios.get('/api/v1/segmentos_full')
+            .then(function(response) {
+                // Almacenar la respuesta en la variable 'segmentos'
+                segmentos = response.data.data.segmentos;
+
+                // Aquí puedes trabajar con la variable 'segmentos' como necesites
+                // Por ejemplo, podrías llamar a otra función aquí y pasarle 'segmentos'
+                hacerAlgoConSegmentos(segmentos);
+            })
+            .catch(function(error) {
+                console.error('Hubo un error al obtener los segmentos:', error);
+                // Manejar el error como sea apropiado para tu aplicación
+            });
+    };
+
+    function hacerAlgoConSegmentos(data) {
+        // Procesar los datos de 'segmentos' como lo necesites
+        console.log(data); // Solo un ejemplo, mostrando los datos en consola
+    }
+</script>
+
+
+
+    <!--header-->
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+    <div id="react-root">
+
+    <div class="container-fluid barra_superior">
+        <div class="row">
+            <div class="d-none d-md-block col-6 titulo_barra">
+                <a href="index.html">
+                <img src="images/logo_horizontal.png" class="logo"/>
+                </a>
+            </div>
+            <div class="d-block d-md-none col-2 titulo_barra">
+                <a href="index.html">
+                <img src="images/logo_vertical.png" class="logo_vertical"/>
+                </a>
+            </div> 
+            <div class="d-block col-4 d-md-none">
+
+            </div> 
+            <div class="col-3 col-md-3 sub_secciones_barra">
+                carreteras totales
+            </div>
+            <div class="col-3 col-md-3 sub_secciones_barra">
+                <a href="dashboard_general.html" style="text-decoration: none; color:white;">
+                    información especifica
+                </a>
+            </div>
+        </div>   
+    </div>
+    <!-- Crea un contenedor div para el mapa -->
+    <br>
+    <div class="mapa"> 
+        <img src="images/carga_final2.gif" id="cargando"/>
+        <div id="map"></div>
+        <div class="imagen_clasificacion d-none d-xl-block" style="position: relative; top: -95%; left: 80%;">
+            <div class="imagen_informacion container">
+                <div class="row">
+                <h5 style="text-align: center;">Clasificación</h5>
+                </div>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="cuadro_clasificicacion col-2" style="background-color: green;"></div> 
+                <div class="col-8" style="font-weight: 500;">5. Excelente</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: #B5E61D;"></div> 
+                    <div class="col-8" style="font-weight: 500;">4. Buena</div>
+                    </div>
+   
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: yellow;"></div> 
+                    <div class="col-8" style="font-weight: 500;">3. Regular</div>
+                    </div>
+        
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: orange;"></div> 
+                    <div class="col-8" style="font-weight: 500;">2. Deficiente</div>
+                    </div>
+    
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: red;"></div> 
+                    <div class="col-8" style="font-weight: 500;">1. Mala</div>
+                    </div>
+            </div>
+        </div>
+        <div class="imagen_clasificacion d-none d-lg-block d-xl-none" style="position: relative; top: -95%; left: 75%;">
+            <div class="imagen_informacion container">
+                <div class="row">
+                <h5 style="text-align: center;">Clasificación</h5>
+                </div>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="cuadro_clasificicacion col-2" style="background-color: green;"></div> 
+                <div class="col-8" style="font-weight: 500;">5. Excelente</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: #B5E61D;"></div> 
+                    <div class="col-8" style="font-weight: 500;">4. Buena</div>
+                    </div>
+   
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: yellow;"></div> 
+                    <div class="col-8" style="font-weight: 500;">3. Regular</div>
+                    </div>
+        
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: orange;"></div> 
+                    <div class="col-8" style="font-weight: 500;">2. Deficiente</div>
+                    </div>
+    
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: red;"></div> 
+                    <div class="col-8" style="font-weight: 500;">1. Mala</div>
+                    </div>
+            </div>
+        </div>
+        <div class="imagen_clasificacion d-none d-md-block d-lg-none" style="position: relative; top: -95%; left: 67%;">
+            <div class="imagen_informacion container">
+                <div class="row">
+                <h5 style="text-align: center;">Clasificación</h5>
+                </div>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="cuadro_clasificicacion col-2" style="background-color: green;"></div> 
+                <div class="col-8" style="font-weight: 500;">5. Excelente</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: #B5E61D;"></div> 
+                    <div class="col-8" style="font-weight: 500;">4. Buena</div>
+                    </div>
+   
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: yellow;"></div> 
+                    <div class="col-8" style="font-weight: 500;">3. Regular</div>
+                    </div>
+        
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: orange;"></div> 
+                    <div class="col-8" style="font-weight: 500;">2. Deficiente</div>
+                    </div>
+    
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: red;"></div> 
+                    <div class="col-8" style="font-weight: 500;">1. Mala</div>
+                    </div>
+            </div>
+        </div>
+        <div class="imagen_clasificacion d-none d-sm-block d-md-none" style="position: relative; top: -95%; left: 57%;">
+            <div class="imagen_informacion container">
+                <div class="row">
+                <h5 style="text-align: center;">Clasificación</h5>
+                </div>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="cuadro_clasificicacion col-2" style="background-color: green;"></div> 
+                <div class="col-8" style="font-weight: 500;">5. Excelente</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: #B5E61D;"></div> 
+                    <div class="col-8" style="font-weight: 500;">4. Buena</div>
+                    </div>
+   
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: yellow;"></div> 
+                    <div class="col-8" style="font-weight: 500;">3. Regular</div>
+                    </div>
+        
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: orange;"></div> 
+                    <div class="col-8" style="font-weight: 500;">2. Deficiente</div>
+                    </div>
+    
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: red;"></div> 
+                    <div class="col-8" style="font-weight: 500;">1. Mala</div>
+                    </div>
+            </div>
+        </div>
+        <div class="imagen_clasificacion d-block d-sm-none" style="position: relative; top: -95%; left: 50%;">
+            <div class="imagen_informacion container">
+                <div class="row">
+                <h5 style="text-align: center;">Clasificación</h5>
+                </div>
+                <div class="row">
+                <div class="col-2"></div>
+                <div class="cuadro_clasificicacion col-2" style="background-color: green;"></div> 
+                <div class="col-8" style="font-weight: 500;">5. Excelente</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: #B5E61D;"></div> 
+                    <div class="col-8" style="font-weight: 500;">4. Buena</div>
+                    </div>
+   
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: yellow;"></div> 
+                    <div class="col-8" style="font-weight: 500;">3. Regular</div>
+                    </div>
+        
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: orange;"></div> 
+                    <div class="col-8" style="font-weight: 500;">2. Deficiente</div>
+                    </div>
+    
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="cuadro_clasificicacion col-2" style="background-color: red;"></div> 
+                    <div class="col-8" style="font-weight: 500;">1. Mala</div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row d-none" id="aparecer_cuadro_seleccionado">
+            <div class="col-12 col-lg-6">
+                <div  class="cuadro_informacion_area">
+                <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+                </div>
+            </div>
+        
+            <div class="col-12 col-lg-6">
+                <figure class="highcharts-figure">
+                    <div id="container_scatter"></div>
+                </figure>
+            </div>
+        </div>
+    <br>
+    <footer class="row">
+        <div class="col-12">
+            información general sobre la pagina web
+        </div>
+    </footer>
+    </div>
+	<script type="text/javascript" src="JS/jquery_library.js" ></script>
+    <script src="JS/main.js"></script>
+    <script src="JS/scatter-jitter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="	anonymous"></script>
+</div>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+</body>
+</html>

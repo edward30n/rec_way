@@ -1,0 +1,32 @@
+.cuadro_informacion_general{
+    border-style: solid;
+    border-radius: 20px;
+    border-color: gray;
+    height: 100%;
+    padding-top: 10px;
+    padding-left: 5px;
+}
+#container_candlestick, #container_candlestick2, #container_candlestick3, #container_candlestick4, #container_candlestick5 {
+    border-style: outset;
+    border-radius: 30px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); 
+}
+.texto_dashboard_carreteras{
+    border-style: solid;
+    border-width: 2px;
+    border-color: gray;
+    height: 200px;
+    border-radius: 20px;
+    height: 100%;
+    
+}
+
+#container_septima, #container_caracas, #container_norte, #container_80, #container_NQS {
+    height: 400px;
+    border-style: outset;
+    border-radius: 30px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); 
+
+}
+
+

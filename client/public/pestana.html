@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa</title>
+    <!-- Incluye las hojas de estilo de Leaflet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/leaflet.css" />
+	<link rel = "stylesheet" href="CSS/pestana.css"/>
+    <link rel = "stylesheet" href="CSS/bellcurve.css"/>
+    <link rel = "stylesheet" href="CSS/barra_calificacion.css"/>
+
+    <!-- Incluye la biblioteca Leaflet -->
+    <script src="JS/leaflet.js"></script>
+    
+</head>
+<body>
+
+
+    <h1>Obtener Segmentos de la Base de Datos</h1>
+    <div id="data-container">Esperando solicitud...</div>
+
+    <!-- Incluir Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let segmento = []; // Variable para almacenar segmentos
+
+        function obtenerSegmento(parametro) {
+    axios.get(`/api/v1/segmento_muestras/${parametro}`)
+        .then(function(response) {
+            // Cambia aquí 'segmentos' a 'segmento'
+            let segmento = response.data.data.segmento; // Ahora segmento contiene el objeto segmento correcto
+            let muestras = response.data.data.muestras; // Y muestras contiene el array de muestras
+
+            // Aquí puedes hacer lo que necesites con las variables 'segmento' y 'muestras'
+            // Por ejemplo, si quieres procesar los datos o manejar la respuesta de alguna manera
+            procesarSegmento(segmento, muestras); // Asumiendo que tienes una función para procesarlos
+        })
+        .catch(function(error) {
+            console.error('Hubo un error al obtener el segmento:', error);
+            // Manejar el error como sea apropiado para tu aplicación
+        });
+}
+
+function procesarSegmento(segmento, muestras) {
+    // Haz algo con los datos del segmento y las muestras aquí
+    console.log('Datos del segmento recibidos:', segmento);
+    console.log('Muestras recibidas:', muestras);
+    // Ejemplo de cómo podrías mostrar la información en tu HTML
+    const dataContainer = document.getElementById('data-container');
+    dataContainer.textContent = 'Segmento: ' + segmento.nombre + ' con ' + muestras.length + ' muestras.';
+}
+
+// Llamada de ejemplo a la función con un id de segmento
+obtenerSegmento('4933197535145860000');
+    </script>
+
+
+
+
+
+    <script src="code/highstock.js"></script>
+    <script src="code/modules/data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+        <div class="container-fluid barra_superior">
+            <div class="row">
+                <div class="d-none d-md-block col-6 titulo_barra">
+                    <a href="index.html">
+                    <img src="images/logo_horizontal.png" class="logo"/>
+                    </a>
+                </div>
+                <div class="d-block d-md-none col-2 titulo_barra">
+                    <a href="index.html">
+                    <img src="images/logo_vertical.png" class="logo_vertical"/>
+                    </a>
+                </div> 
+                <div class="d-block col-4 d-md-none">
+    
+                </div> 
+                <div class="col-3 col-md-3 sub_secciones_barra">
+                    carreteras totales
+                </div>
+                <div class="col-3 col-md-3 sub_secciones_barra">
+                    <a href="dashboard_general.html" style="text-decoration: none; color:white;">
+                        información especifica
+                    </a>
+                </div>
+            </div> 
+        </div>  
+        <br>
+        <div class="container-fluid"></div>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="ver_estructura amarillo cuadro_informacion_indices">
+                    <h2 style="text-align: center;">Informaci&oacute;n general</h2>
+                    <p>Distancia del segmento: <strong>70m</strong> </p>
+                    <p>Cantidad de muestras totales: <strong>20</strong> </p>
+                    <p>Cantidad de huecos: <strong>5</strong></p>
+                    <p>Ultima muestra tomada: <strong>20/10/2023</strong> </p>
+                    <p>Muestras por d&iacute;a: <strong>15</strong></p>
+                    <p>Muestras por semana: <strong>15</strong></p>
+                </div>
+            </div>
+            <div class="col-12 col-lg-6 ver_estructura verde cuadro_mapa">
+                <div id="sub_map"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h1 style="text-align: center;"> Información sobre el segmento </h1>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div id="container_candlestick_general"></div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="ver_estructura verde cuadro_informacion_indices">
+                    <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+                <figure class="highcharts-figure ver_estructura rojo">
+                    <div id="container_barra"></div>
+                </figure>
+                </div>
+            </div>
+            <div class ="col-12 col-lg-6 ver_estructura azul">
+            <figure class="highcharts-figure">
+            <div id="container_general"></div>
+            </figure>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="ver_estructura verde cuadro_informacion_indices">
+                    <h2>Informaci&oacute;n IRI</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice de Rugosidad Internacional
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 1.2</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+                <figure class="highcharts-figure ver_estructura rojo">
+                    <div id="container_barra_IRI"></div>
+                </figure>
+                </div>
+            </div>
+            <div class ="col-12 col-lg-6 ver_estructura azul">
+            <figure class="highcharts-figure">
+            <div id="container_IRI"></div>
+            </figure>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="ver_estructura verde cuadro_informacion_indices">
+                    <h2>Informaci&oacute;n Indice Aceleraci&oacute;n Vertical</h2>
+                    <br>
+                    <p>
+                        Informaci&oacute;n general sobre el Indice de la Aceleraci&oacute;n Vertical
+                        </p>
+                        <p>
+                        Valor promedio : <strong> 1.2</strong>
+                        </p>
+                        <p>
+                        Desviación estandar : <strong> 0.3</strong>
+                        </p>
+                        <p>
+                        Cantidad de muestras: <strong> 50</strong>
+                        </p>
+                <figure class="highcharts-figure ver_estructura rojo">
+                    <div id="container_barra_az"></div>
+                </figure>
+                </div>
+            </div>
+            <div class ="col-12 col-lg-6 ver_estructura azul">
+            <figure class="highcharts-figure">
+            <div id="container_az"></div>
+            </figure>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="ver_estructura verde cuadro_informacion_indices">
+                    <h2>Informaci&oacute;n Indice Aceleraci&oacute;n Horizontal</h2>
+                    <p>
+                        Informaci&oacute;n general sobre el Indice de Aceleraci&oacute;n Horizontal
+                        </p>
+                        <p>
+                        Valor promedio : <strong> 1.2</strong>
+                        </p>
+                        <p>
+                        Desviación estandar : <strong> 0.3</strong>
+                        </p>
+                        <p>
+                        Cantidad de muestras: <strong> 50</strong>
+                        </p>
+                    <figure class="highcharts-figure ver_estructura rojo">
+                        <div id="container_barra_ax"></div>
+                    </figure>
+                    </div>
+            </div>
+            <div class ="col-12 col-lg-6 ver_estructura azul">
+            <figure class="highcharts-figure">
+            <div id="container_ax"></div>
+            </figure>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12 col-lg-6 ">
+                <div class="ver_estructura verde cuadro_informacion_indices">
+                    <h2>Informaci&oacute;n Indice velocidad angular</h2>
+                    <br>
+                    <p>
+                        Informaci&oacute;n general sobre el Indice de Velocidad Angular
+                        </p>
+                        <p>
+                        Valor promedio : <strong> 1.2</strong>
+                        </p>
+                        <p>
+                        Desviación estandar : <strong> 0.3</strong>
+                        </p>
+                        <p>
+                        Cantidad de muestras: <strong> 50</strong>
+                        </p>
+                    <figure class="highcharts-figure ver_estructura rojo">
+                        <div id="container_barra_wx"></div>
+                    </figure>
+                </div>
+            </div>
+            <div class ="col-12 col-lg-6 ver_estructura azul">
+            <figure class="highcharts-figure">
+            <div id="container_wx"></div>
+            </figure>
+            </div>
+        </div>
+    </div>
+    <br>
+    <footer class="row">
+        <div class="col-12">
+            información general sobre la pagina web
+        </div>
+    </footer>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/histogram-bellcurve.js"></script>
+    <script src="code/modules/bullet.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+	<script type="text/javascript" src="JS/jquery_library.js" ></script>
+    <script src="JS/sub_mapa.js"></script>
+    <script src="JS/pestana.js"></script>
+    <script src="JS/bellcurve.js"></script>
+    <script src="JS/barra_calificacion.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="	anonymous"></script>
+</body>
+</html>

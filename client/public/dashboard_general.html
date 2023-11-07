@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa</title>
+    <!-- Incluye las hojas de estilo de Leaflet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"crossorigin="anonymous">
+    <link rel="stylesheet" href="CSS/leaflet.css" />
+	<link rel = "stylesheet" href="CSS/main.css"/>
+    <link rel = "stylesheet" href="CSS/boxplot.css"/>
+    <link rel = "stylesheet" href="CSS/candlestick.css"/>
+    <link rel = "stylesheet" href="CSS/bellcurve.css"/>
+    <link rel = "stylesheet" href="CSS/dashboard_general.css"/>
+    <!-- Incluye la biblioteca Leaflet -->
+    <script src="JS/leaflet.js"></script>
+</head>
+<body>
+
+
+
+    <div id="data-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // Variable para almacenar los segmentos
+    let segmentos = [];
+    // Función que se llama al cargar la página
+    window.onload = function() {
+        // Hacer la petición a la API y guardar los datos en la variable 'segmentos'
+        axios.get('/api/v1/segmentos_por_nombre?nombres=Avenida Carrera 70,javeriana,Av. Suba,bucara,test')
+            .then(function(response) {
+                // Almacenar la respuesta en la variable 'segmentos'
+                segmentos = response.data.data.segmentos;
+
+                // Aquí puedes trabajar con la variable 'segmentos' como necesites
+                // Por ejemplo, podrías llamar a otra función aquí y pasarle 'segmentos'
+                hacerAlgoConSegmentos(segmentos);
+            })
+            .catch(function(error) {
+                console.error('Hubo un error al obtener los segmentos:', error);
+                // Manejar el error como sea apropiado para tu aplicación
+            });
+    };
+
+    function hacerAlgoConSegmentos(data) {
+        // Procesar los datos de 'segmentos' como lo necesites
+        console.log(data); // Solo un ejemplo, mostrando los datos en consola
+    }
+</script>
+
+
+
+
+
+
+
+    <script src="code/highstock.js"></script>
+    <script src="code/modules/data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+    <!--header-->
+    <div class="container-fluid barra_superior">
+        <div class="row">
+            <div class="d-none d-md-block col-6 titulo_barra">
+                <a href="index.html">
+                <img src="images/logo_horizontal.png" class="logo"/>
+                </a>
+            </div>
+            <div class="d-block d-md-none col-2 titulo_barra">
+                <a href="index.html">
+                <img src="images/logo_vertical.png" class="logo_vertical"/>
+                </a>
+            </div> 
+            <div class="d-block col-4 d-md-none">
+
+            </div> 
+            <div class="col-3 col-md-3 sub_secciones_barra">
+                carreteras totales
+            </div>
+            <div class="col-3 col-md-3 sub_secciones_barra">
+                <a href="dashboard_general.html" style="text-decoration: none; color:white;">
+                    información especifica
+                </a>
+            </div>
+        </div> 
+    </div>
+    <br>
+    <h2 style="text-align: center;">
+        Reporte de la calidad vial de las carreteras mas importantes
+    </h2>
+    <br>
+    <div class="container-fluid">
+    <div class="row"> 
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_boxplot"></div>
+            </figure> 
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="cuadro_informacion_general">
+                <h3 style="text-align: center;">información general</h3>
+            
+                    <p>Distancia del segmento: <strong>70m</strong> </p>
+                    <p>Cantidad de muestras totales: <strong>20</strong> </p>
+                    <p>Cantidad de huecos: <strong>5</strong></p>
+                    <p>Ultima muestra tomada: <strong>20/10/2023</strong> </p>
+                    <p>Muestras por d&iacute;a: <strong>15</strong></p>
+                    <p>Muestras por semana: <strong>15</strong></p>
+                
+            </div>
+        </div>
+    </div>   
+    <hr>
+    <div class="row">
+        <h3>Información especifica de cada carretera</h3>
+    </div>
+    <div class="row">
+        <h4>carrera 7</h4>
+        <div class="col-12">
+            <div id="container_candlestick"></div>
+    </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="texto_dashboard_carreteras">
+                    <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_septima"></div>
+                </figure>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h4>Avenida Caracas</h4>
+        <div class="col-12">
+            <div id="container_candlestick2"></div>
+    </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="texto_dashboard_carreteras">
+                <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_caracas"></div>
+                </figure>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h4>Autopista Norte</h4>
+        <div class="col-12">
+            <div id="container_candlestick3"></div>
+    </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="texto_dashboard_carreteras">
+                <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_norte"></div>
+                </figure>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h4>Calle 80</h4>
+        <div class="col-12">
+            <div id="container_candlestick4"></div>
+    </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="texto_dashboard_carreteras">
+                <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_80"></div>
+                </figure>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h4>NQS</h4>
+        <div class="col-12">
+            <div id="container_candlestick5"></div>
+    </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="texto_dashboard_carreteras">
+                <h2>Informaci&oacute;n Indice General</h2>
+                    <br>
+                    <p>
+                    Informaci&oacute;n general sobre el Indice General
+                    </p>
+                    <p>
+                    Valor promedio : <strong> 5</strong>
+                    </p>
+                    <p>
+                    Desviación estandar : <strong> 0.3</strong>
+                    </p>
+                    <p>
+                    Cantidad de muestras: <strong> 50</strong>
+                    </p>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <figure class="highcharts-figure">
+                <div id="container_NQS"></div>
+                </figure>
+        </div>
+    </div>
+    </div>
+    <br>
+    <footer class="row">
+        <div class="col-12">
+            información general sobre la pagina web
+        </div>
+    </footer>
+    </div>
+    <script src="code/highcharts.js"></script>
+    <script src="code/modules/histogram-bellcurve.js"></script>
+    <script src="code/highcharts-more.js"></script>
+    <script src="code/modules/bullet.js"></script>
+    <script src="code/modules/exporting.js"></script>
+    <script src="code/modules/export-data.js"></script>
+    <script src="code/modules/accessibility.js"></script>
+    <script type="text/javascript" src="JS/jquery_library.js" ></script>
+    <script type="text/javascript" src="JS/boxplot.js" ></script>
+    <script type="text/javascript" src="JS/candlestick.js" ></script>
+    <script type="text/javascript" src="JS/bellcurve_general.js"></script>
+    <script src="JS/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="	anonymous"></script>
+</body>
+</html>
